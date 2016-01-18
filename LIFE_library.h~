@@ -6,7 +6,7 @@ void simulation (int custom_width, int custom_height, int pattern_va, int patter
 
 /*  file_control.c  */
 void read_pattern (int width, int height, int board[][height], int va, int vb, char *patch);
-void save_pattern (int width, int height, int board[][height], char *name);
+void save_pattern (int width, int height, int board[][height], char *nazwa)
 
 /*  interface.c  */
 int main_interface();

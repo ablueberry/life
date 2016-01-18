@@ -132,10 +132,7 @@ void simulation (int custom_width, int custom_height, int pattern_va, int patter
 				break;			
 			}
 			if (c == 's') {
-				char name[20];
-				printf("Type a name of file to save this pattern: ");
-				scanf("%20s", name);
-				save_pattern (width, height, board, name);			
+				printf("saved\n");			
 			}		
 		}	
 	}

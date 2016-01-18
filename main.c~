@@ -8,7 +8,7 @@
 void qstart() {
 	int height =  BOARD_HEIGHT;
 	int width = BOARD_WIDTH;
-	simulation(width, height, 10, 10, "a.txt", 80000000, 200, 0);
+	simulation(width, height, 10, 10, "a.txt", 80000000, 200);
 }
 
 void nstart() {

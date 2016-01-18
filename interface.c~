@@ -181,6 +181,6 @@ void normal_start_interface() {
 	printf("Do you want to play the simulation? [y - 1/n - 0] ");
 	scanf("%d", &yn);
 	if (yn) {
-		simulation(w, h, va, vb, name, t, num, mode);
+		simulation(w, h, va, vb, name, t, num);
 	}	
 }

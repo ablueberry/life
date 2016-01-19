@@ -71,7 +71,8 @@ void menu() {
 	  TABLE OF CONTENTS:
 	  1. Quick play
 	  2. Play
-	  3. About 
+	  3. Settings
+	  4. About 
 	*/
 	int i;
 
@@ -128,55 +129,95 @@ void normal_start_interface() {
 	char name[20];
 
 	printf("WELCOME IN SIMULATION OF LIFE\nPlease fill the form below:\n\n");
-	printf("Simulation's mode (0 - auto, 1 - manual) %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
-	scanf("%d", &mode);
-	printf("Board width (min - 10, max - 50) %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
-	scanf("%d", &w);
-	printf("\n");
-	if (w < 10 || w > 50 ) {
-		printf("Sorry, you typed something wrong, this value will be set to default\n\n");
-		w = 20;
+
+	while (1) {
+		printf("Simulation's mode (0 - auto, 1 - manual) %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
+		scanf("%d", &mode);
+		if (mode == 0 || mode == 1) {
+			break;
+		} else {
+			printf("You typed something wrong, please try again\n\n");
+		}
 	}
-	printf("Board height (min - 10, max - 50) %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
-	scanf("%d", &h);
-	printf("\n");
-	if (h < 10 || h > 50 ) {
-		printf("Sorry, you typed something wrong, this value will be set to default\n\n");
-		h = 20;
+	
+	int def_w, def_h;
+	while (1) {
+		printf("\nPattern file name (eg. a.txt, max 20 characters) %s                     %s\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
+		scanf("%s", name);
+		FILE *data;
+		data = fopen(name, "r");
+		int w, h, i, j;
+		if (data == NULL) {
+			printf("File doesn't exist, try with another name\n");
+		} else {
+			fscanf(data, "%d %d ", &def_w, &def_h);
+			break;
+		}
 	}
-	printf("Pattern file name (eg. a.txt, max 20 characters) %s                     %s\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
-	scanf("%s", name);
-	printf("\n");
-	printf("Position of pattern's left corner (pattern must be in the board) :\nFrom left border %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
-	scanf("%d", &va);
-	printf("\n");
-	printf("From top border %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
-	scanf("%d", &vb);
-	if ( va > w || vb > h ) {
-		printf("Sorry, you typed something wrong, this value will be set to default\n\n");
-		va = w / 2;
-		vb = h / 2;	
+
+	while (1) {
+		printf("\nBoard width (min = %d, max = 50) %s    %s\b\b\b\b", def_w < 10 ? 10 : def_w, right_pointing_triangle, left_pointing_triangle);
+		scanf("%d", &w);
+		if (w > 50 ) {
+			printf("Sorry, this value of width is not allowed, try again\n");
+		} else if (w < 10) {
+			printf("Sorry, this value of width is not allowed, try again\n");
+		} else if (w < def_w) {
+			printf("Sorry, this value of width is not allowed, try again\n");
+		} else {
+			break;
+		}
 	}
-	printf("\n");
+	
+	while (1) {
+		printf("\nBoard height (min - %d, max - 50) %s    %s\b\b\b\b",  def_h < 10 ? 10 : def_h, right_pointing_triangle, left_pointing_triangle);
+		scanf("%d", &h);
+		if (h > 50 ) {
+			printf("Sorry, this value of height is not allowed, try again\n");
+		} else if (h < 10) {
+			printf("Sorry, this value of height is not allowed, try again\n");
+		} else if (h < def_h) {
+			printf("Sorry, this value of height is not allowed, try again\n");
+		} else {
+			break;
+		}
+	}
+	
+	while (1) {
+		printf("\nPosition of pattern's left corner (pattern must be in the board) :\nFrom left border %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
+		scanf("%d", &va);
+		printf("From top border %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
+		scanf("%d", &vb);
+		if (va+def_w > w) {
+			printf("Sorry, pattern won't be in the board, this value will be set to default\n");
+			va = w - def_w;
+		}
+		if (vb+def_h > h) {
+			printf("Sorry, pattern won't be in the board, this value will be set to default\n");
+			vb = h - def_h;
+		}
+		if (va+def_w <= w && vb+def_h <= h) {
+			break;
+		}
+	}
+
 	int yn;
 	if (mode == 0) {
-		printf("Time of animation's frame (in nanoseconds - min 50 mln nsec- 0,5 sec,  max 200 mln - 2 sec) %s          %s\b\b\b\b\b\b\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
+		printf("\nTime of animation's frame (in nanoseconds - min 50 mln nsec- 0,5 sec,  max 200 mln - 2 sec) %s          %s\b\b\b\b\b\b\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
 		scanf("%d", &t);
-		printf("\n");
 		if ( t < 50000000 || t > 200000000 ) {
-			printf("Sorry, you typed something wrong, this value will be set to default\n\n");
+			printf("Sorry, you typed something wrong, this value will be set to default\n");
 			t = 80000000;
 		}
-		printf("Number of animation's frames (max 1000) %s      %s\b\b\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
+		printf("\nNumber of animation's frames (max 1000) %s      %s\b\b\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
 		scanf("%d", &num);
-		printf("\n");
 		if ( num < 1 || num > 1000 ) {
-			printf("Sorry, you typed something wrong, this value will be set to default\n\n");
+			printf("Sorry, you typed something wrong, this value will be set to default\n");
 			num = 200;
 		}
-		printf("Simulation parameters are set to: \nwidth: %d\nheight: %d\nPattern name file: %s\nPattern's left corner: %d %d\nFrame's time %d\nFrame's number %d\n", w, h, name, va, vb, t, num);
+		printf("\nSimulation parameters are set to: \nwidth: %d\nheight: %d\nPattern name file: %s\nPattern's left corner: %d %d\nFrame's time %d\nFrame's number %d\n", w, h, name, va, vb, t, num);
 	} else {
-		printf("Simulation parameters are set to: \nwidth: %d\nheight: %d\nPattern name file: %s\nPattern's left corner: %d %d\n", w, h, name, va, vb);
+		printf("\nSimulation parameters are set to: \nwidth: %d\nheight: %d\nPattern name file: %s\nPattern's left corner: %d %d\n", w, h, name, va, vb);
 	}
 	printf("Do you want to play the simulation? [y - 1/n - 0] ");
 	scanf("%d", &yn);

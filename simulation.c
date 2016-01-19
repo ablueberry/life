@@ -57,7 +57,6 @@ void play (int width, int height, int board[][height]) {
 		for (j = 0; j < height; j++) {
 			n = neighbours(width, height, board, i, j);
 			/*  ustawienia reguł gry  */
-			/*  TODO zrobić je tak aby mozna było przekazać je w configu  */
 			if (n == 2) new_board[i][j] = board[i][j];
 			if (n == 3) new_board[i][j] = 1;
 			if (n < 2 || n > 3) new_board[i][j] = 0;
@@ -110,7 +109,7 @@ void simulation (int custom_width, int custom_height, int pattern_va, int patter
 		/*  zdefiniowanie czasu pomiędzy klatkami symulacji  */
 		struct timespec reqtime;
 		reqtime.tv_sec = 0;
-   	reqtime.tv_nsec = frame_time_nsec;
+   		reqtime.tv_nsec = frame_time_nsec;
    	/*  symulacja kolejnych klatek  */
 		for (i = 0; i < frame_number; i++) {
 			play(width, height, board);

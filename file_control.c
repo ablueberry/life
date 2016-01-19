@@ -34,9 +34,9 @@ void save_pattern (int width, int height, int board[][height], char *name) {
 	fprintf(data, "%d %d\n", width, height);
 	for (i = 0; i < height; i++) {
 		for (j = 0; j < width; j++) {
-			fprintf(data, "%d ", board[width][height]);		
+			fprintf(data, "%d ", board[j][i]);
 		}
-		fprintf(data, "\n");	
+		fprintf(data, "\n");
 	}
 	fclose(data);
 }

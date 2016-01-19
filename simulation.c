@@ -92,16 +92,38 @@ void print (int width, int height, int board[][height]) {
 	}
 	printf("\b \b\n");
 }
+/*  porównuje dwie tablice i zwraca 1 jeśli są takie same  */
+int compare_frames (int width, int height, int prev[][height], int next[][height]) {
+	int i, j;
+	for (j = 0; j < height; j++) {
+		for (i = 0; i < width; i++) {
+			if (prev[i][j] != next[i][j]) {
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+/*  kopiuje tablice  */
+void copy(int width, int height, int board[][height], int prev[][height]) {
+	int i, j;
+	for (j = 0; j < height; j++) {
+		for (i = 0; i < width; i++) {
+			prev[i][j] = board[i][j];
+		}
+	}
+}
 /* config - zarządza całą symulacją  */
 void simulation (int custom_width, int custom_height, int pattern_va, int pattern_vb, char *pattern_patch, int frame_time_nsec, int frame_number, int mode) {
-	int i, j, k;
+	int i, j, k, q;
 	int width = custom_width;
 	int height = custom_height;
-	int board[width][height];
+	int board[width][height], prev[width][height];
 	/*  czyści terminal  */
 	printf("\033c");
 	/*  wczytanie pierwszej klatki symulacji  */
 	initialize_board(width, height, board);
+	initialize_board(width, height, prev);
 	read_pattern(width, height, board, pattern_va, pattern_vb, pattern_patch);
 	print(width, height, board);
 	/*  mode - auto simulation  */
@@ -110,12 +132,24 @@ void simulation (int custom_width, int custom_height, int pattern_va, int patter
 		struct timespec reqtime;
 		reqtime.tv_sec = 0;
    		reqtime.tv_nsec = frame_time_nsec;
-   	/*  symulacja kolejnych klatek  */
+
+   		int cmp = 0;
+   		/*  symulacja kolejnych klatek  */
 		for (i = 0; i < frame_number; i++) {
 			play(width, height, board);
+			/*  porównuje aktualną klatke z poprzednią  */
+			cmp = compare_frames(width, height, prev, board);
+			/*  kopiuje aktualna klatke  */
+			copy(width, height, board, prev);
 			nanosleep(&reqtime, NULL);
 			printf("\033c");
 			print(width, height, board);
+
+			if (cmp == 1) {
+				printf("Next frames will be the same - end of simulation. Type a number to quit: \n");
+				scanf("%d", &q);
+				break;
+			}
 		}
 	}
 	/*	mode - safe to file at end  */

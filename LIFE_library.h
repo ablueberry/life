@@ -12,4 +12,6 @@ void save_pattern (int width, int height, int board[][height], char *name);
 int main_interface();
 void normal_start_interface();
 void about_game();
+void create_pattern();
+
 #endif

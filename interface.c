@@ -18,6 +18,7 @@
 #define full_block "\u2588"
 #define light_shade_block "\u2591"
 #define medium_shade_block "\u2592"
+#define shadow_block "\u2587"
 
 /*  1/4 circles  */
 #define circle_corner_top_left "\u256D"
@@ -71,8 +72,9 @@ void menu() {
 	  TABLE OF CONTENTS:
 	  1. Quick play
 	  2. Play
-	  3. Settings
+	  3. Create mode
 	  4. About 
+	  5. Quit
 	*/
 	int i;
 
@@ -98,7 +100,7 @@ void menu() {
 	}
 	printf("%s\n", crossing_right);
 
-	printf("%s                           3. SETTINGS                                %s\n", double_vertical_pipe, double_vertical_pipe);
+	printf("%s                           3. CREATE MODE                             %s\n", double_vertical_pipe, double_vertical_pipe);
 	printf("%s", crossing_left);
 	for	(i = 0; i < 70; i++) {
 		printf("%s", double_horizontal_pipe);
@@ -106,6 +108,13 @@ void menu() {
 	printf("%s\n", crossing_right);
 
 	printf("%s                           4. ABOUT                                   %s\n", double_vertical_pipe, double_vertical_pipe);
+	printf("%s", crossing_left);
+	for	(i = 0; i < 70; i++) {
+		printf("%s", double_horizontal_pipe);
+	}
+	printf("%s\n", crossing_right);
+
+	printf("%s                           5. QUIT                                    %s\n", double_vertical_pipe, double_vertical_pipe);
 
 	/*  bottom border  */
 	printf("%s", left_bottom_corner);
@@ -233,6 +242,58 @@ void about_game () {
 	printf("\nRules\n");
 	printf("The universe of the Game of Life is an infinite two-dimensional orthogonal grid\nof square cells, each of which is in one of two possible states,\nalive or dead. Every cell interacts with its eight neighbours, which\nare the cells that are horizontally, vertically, or diagonally adjacent.\nAt each step in time, the following transitions occur:\n");
 	printf("\n1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.\n2. Any live cell with two or three live neighbours lives on to the next generation.\n3. Any live cell with more than three live neighbours dies, as if by over-population.\n4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.\n");
+	printf("\n\n\nType a number to quit: ");
+	scanf("%d", &q);
+}
+
+void create_pattern() {
+	printf("Welcome in 'CREATE MODE'\n\n");
+	printf("Here you can make your own pattern\n");
+	int w, h, i, j, k, l, q;
+	printf("Enter pattern width: ");
+	scanf("%d", &w);
+	if (w > 50) {
+		printf("You can make width max 50\n");
+		w = 50;
+	}
+	printf("Enter pattern height: ");
+	scanf("%d", &h);
+	if (h > 50) {
+		printf("You can make height max 50\n");
+		h = 50;
+	}
+	int b[w][h];
+	/*  inicjuje tablice zerami  */
+	for (i = 0; i < w; i++) {
+		for (j = 0; j < h; j++) {
+			b[i][j] = 0;
+		}
+	}
+	int cell;
+	for (l = 0; l < h; l++) {
+		for (k = 0; k < w; k++) {
+			/*  czyści ekran i drukuje aktualną tablice  */
+			printf("\033c");
+			for (j = 0; j < h; j++) {
+				for (i = 0; i < w; i++) {
+					if (k == i && l == j) {
+						printf("%s ", full_block);
+					} else {
+						printf("%s ", b[i][j] ? shadow_block : light_shade_block);
+					}
+				}
+				printf("\n");
+			}
+			printf("\nDo you want to make highlighted cell dead (type '0') or alive (type '1')? ");
+			scanf("%d", &cell);
+			b[k][l] = cell;
+		}
+	}
+	char name[20];
+	printf("\n\nType a name of file to save your pattern (*.txt): ");
+	scanf("%s", name);
+	save_pattern(w, h, b, name);
+	printf("\nYour pattern has been saved, return to menu and play :)\n");
 	printf("\n\n\nType a number to quit: ");
 	scanf("%d", &q);
 }

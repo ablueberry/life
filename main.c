@@ -15,21 +15,22 @@ void nstart() {
 	printf("\033c");
 	normal_start_interface();
 }
-void settings() {
-
+void create() {
+	printf("\033c");
+	create_pattern();
 }
 int about() {
 	printf("\033c");
 	about_game();
-	return 0;
 }
 int main(){
 	/*
 	  TABLE OF CONTENTS:
 	  1. Quick play
 	  2. Play
-	  3. Settings
+	  3. Create pattern
 	  4. About 
+	  5. Quit
 	*/
 	int choose;
 	while (1) {
@@ -42,10 +43,13 @@ int main(){
 			nstart();
 		}
 		if (choose == 3) {
-			settings();
+			create();
 		}
 		if (choose == 4) {
 			about();
+		}
+		if (choose == 5) {
+			break;
 		}
 	}
 	return 0;

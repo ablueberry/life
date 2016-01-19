@@ -118,10 +118,10 @@ void menu() {
 int main_interface() {
 	header();
 	menu();
-	int choose;
+	int ch;
 	printf("\nPlease choose from options above and type the number %s   %s\b\b\b", right_pointing_triangle, left_pointing_triangle);
-	scanf("%d", &choose);
-	return choose;
+	scanf("%d", &ch);
+	return ch;
 }
 
 void normal_start_interface() {
@@ -170,7 +170,7 @@ void normal_start_interface() {
 	}
 	
 	while (1) {
-		printf("\nBoard height (min - %d, max - 50) %s    %s\b\b\b\b",  def_h < 10 ? 10 : def_h, right_pointing_triangle, left_pointing_triangle);
+		printf("\nBoard height (min = %d, max = 50) %s    %s\b\b\b\b",  def_h < 10 ? 10 : def_h, right_pointing_triangle, left_pointing_triangle);
 		scanf("%d", &h);
 		if (h > 50 ) {
 			printf("Sorry, this value of height is not allowed, try again\n");
@@ -186,12 +186,12 @@ void normal_start_interface() {
 	while (1) {
 		printf("\nPosition of pattern's left corner (pattern must be in the board) :\nFrom left border %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
 		scanf("%d", &va);
-		printf("From top border %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
-		scanf("%d", &vb);
 		if (va+def_w > w) {
 			printf("Sorry, pattern won't be in the board, this value will be set to default\n");
 			va = w - def_w;
 		}
+		printf("From top border %s    %s\b\b\b\b", right_pointing_triangle, left_pointing_triangle);
+		scanf("%d", &vb);
 		if (vb+def_h > h) {
 			printf("Sorry, pattern won't be in the board, this value will be set to default\n");
 			vb = h - def_h;
@@ -224,4 +224,15 @@ void normal_start_interface() {
 	if (yn) {
 		simulation(w, h, va, vb, name, t, num, mode);
 	}	
+}
+
+void about_game () {  
+	int q;   
+	printf("The Game of Life, also known simply as Life, is a cellular automaton devised\nby the British mathematician John Horton Conway in 1970.\n");     
+	printf("The game is a zero-player game, meaning that its evolution is determined\nby its initial state, requiring no further input. One interacts with\nthe Game of Life by creating an initial configuration and observing\nhow it evolves or, for advanced players, by creating patterns with particular\nproperties.\n"); 
+	printf("\nRules\n");
+	printf("The universe of the Game of Life is an infinite two-dimensional orthogonal grid\nof square cells, each of which is in one of two possible states,\nalive or dead. Every cell interacts with its eight neighbours, which\nare the cells that are horizontally, vertically, or diagonally adjacent.\nAt each step in time, the following transitions occur:\n");
+	printf("\n1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.\n2. Any live cell with two or three live neighbours lives on to the next generation.\n3. Any live cell with more than three live neighbours dies, as if by over-population.\n4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.\n");
+	printf("\n\n\nType a number to quit: ");
+	scanf("%d", &q);
 }

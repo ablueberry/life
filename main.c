@@ -18,8 +18,10 @@ void nstart() {
 void settings() {
 
 }
-void about() {
-
+int about() {
+	printf("\033c");
+	about_game();
+	return 0;
 }
 int main(){
 	/*
@@ -29,9 +31,10 @@ int main(){
 	  3. Settings
 	  4. About 
 	*/
+	int choose;
 	while (1) {
 		printf("\033c");
-		int choose = main_interface();
+		choose = main_interface();
 		if (choose == 1) {
 			qstart();
 		}
@@ -44,7 +47,6 @@ int main(){
 		if (choose == 4) {
 			about();
 		}
-
 	}
 	return 0;
 }
